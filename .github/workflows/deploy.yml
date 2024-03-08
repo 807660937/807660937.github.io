@@ -49,15 +49,16 @@ jobs:
 
       # 部署
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
+          # GitHub 密钥
+          token: ${{ secrets.ACCESS_TOKEN }}
+          # GitHub Pages 读取的分支
+          branch: gh-pages
+          # 静态文件所在目录
+          folder: dist
           git-config-name: 807660937
           git-config-email: 807660937@qq.com
-          # GitHub 密钥
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           # 指定仓库
-          REPOSITORY_NAME: 807660937.github.io
-          # GitHub Pages 读取的分支
-          BRANCH: gh-pages
-          # 静态文件所在目录
-          FOLDER: dist
+          repository-name: 807660937/807660937.github.io
+          
