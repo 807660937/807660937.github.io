@@ -49,14 +49,13 @@ jobs:
 
       # 部署
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           # GitHub 密钥
-          token: ${{ secrets.ACCESS_TOKEN }}
-          # GitHub Pages 读取的分支
-          branch: gh-pages
-          # 静态文件所在目录
-          folder: dist
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           # 指定仓库
-          repository-name: 807660937/807660937.github.io
-          
+          REPOSITORY_NAME: 807660937/upoe.top
+          # GitHub Pages 读取的分支
+          BRANCH: gh-pages
+          # 静态文件所在目录
+          FOLDER: dist
