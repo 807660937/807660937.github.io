@@ -5,7 +5,7 @@ layoutClass: 'm-home-layout'
 hero:
   name: U-POE
   text: Your Personal AI assistant !
-  tagline: 您的专属私人大模型 ！
+  tagline: 您的专属私人AI助手 ！
   image:
     src: /logo233.png
     alt: miao
