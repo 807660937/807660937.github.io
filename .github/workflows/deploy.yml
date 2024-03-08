@@ -57,8 +57,6 @@ jobs:
           branch: gh-pages
           # 静态文件所在目录
           folder: dist
-          git-config-name: 807660937
-          git-config-email: 807660937@qq.com
           # 指定仓库
           repository-name: 807660937/807660937.github.io
           
