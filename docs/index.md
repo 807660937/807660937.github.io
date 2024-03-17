@@ -27,7 +27,7 @@ features:
   - icon: 🔥
     title: 体验大语言模型
     details: ChatGPT<br>文心一言<br>智谱等二十多种国内外顶尖大模型
-    link: https://upoe.cc # TODO
+    link: https://jwkj015.cn # TODO
     linkText: Go
     theme: alt
 
