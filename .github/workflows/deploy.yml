@@ -27,26 +27,27 @@ jobs:
         with:
           persist-credentials: false
 
-      # 设置 Node 版本
-      - name: Set up Node.js
+      # 安装 pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8.15
+
+      # 设置 node 版本
+      - name: Set node version to 18
         uses: actions/setup-node@v3
         with:
-          node-version: '20.10.0'
-          # 可选：配置缓存以加快构建速度
-          cache: 'npm'
-
-      # 安装依赖
-      - name: Install Dependencies
-        run: npm install
+          node-version: 18
+          #cache: 'pnpm'
 
       # 打包静态文件
       - name: Build
-        run: npm run build
+        run:  pnpm install && pnpm run build
 
       - name: Copy files
         run: cp README.md ./dist/
 
-      # 部署到 GitHub Pages
+      # 部署
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
