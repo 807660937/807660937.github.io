@@ -66,7 +66,7 @@ curl https://api.rcouyi.com/v1/models \
     ```
   - 方式 2：使用 request 请求
 
-    ```
+    ```python
     import requests
     import json
     # 你的API密钥，确保它已经设置为环境变量
@@ -93,85 +93,82 @@ curl https://api.rcouyi.com/v1/models \
 
   - 方式 3：流式（stream 方式） 调用
 
-    ````
+    ````python
     import os
     from openai import OpenAI
-        client = OpenAI(
-            api_key=os.getenv('API_KEY'),
-            base_url="https://api.rcouyi.com/v1/",
-        )
+    client = OpenAI(
+        api_key=os.getenv('API_KEY'),
+        base_url="https://api.rcouyi.com/v1/",
+    )
 
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "你是chatgpt，由 openAI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同  时，你会拒绝一些涉及恐怖主义，种族歧视，黄色暴力等问题的回答。",
-                },
-                {
-                    "role": "user",
-                    "content": "你好，我叫李雷，1+1等于多少？"
-                },
-            ],
-            temperature=0.3,
-            stream=True,
-        )
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {
+                "role": "system",
+                "content": "你是chatgpt，由 openAI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同  时，你会拒绝一些涉及恐怖主义，种族歧视，黄色暴力等问题的回答。",
+            },
+            {
+                "role": "user",
+                "content": "你好，我叫李雷，1+1等于多少？"
+            },
+        ],
+        temperature=0.3,
+        stream=True,
+    )
 
-        collected_messages = []
-        for idx, chunk in enumerate(response):
-            # print("Chunk received, value: ", chunk)
-            chunk_message = chunk.choices[0].delta
-            if not chunk_message.content:
-                continue
-            collected_messages.append(chunk_message)  # save the message
-            print(f"#{idx}: {''.join([m.content for m in collected_messages])}")
-        print(f"Full conversation received: {''.join([m.content for m in collected_messages])}")
-        ```
-    上述两种非流式方式会得到：
-    此请求查询 gpt-3.5-turbo 模型以完成以“说这是测试”提示开头的文本。您应该收到类似于以下内容的 json 响应：
-    ````
-
+    collected_messages = []
+    for idx, chunk in enumerate(response):
+        # print("Chunk received, value: ", chunk)
+        chunk_message = chunk.choices[0].delta
+        if not chunk_message.content:
+            continue
+        collected_messages.append(chunk_message)  # save the message
+        print(f"#{idx}: {''.join([m.content for m in collected_messages])}")
+    print(f"Full conversation received: {''.join([m.content for m in collected_messages])}")
+    ```
+  上述两种非流式方式会得到：
+  此请求查询 gpt-3.5-turbo 模型以完成以“说这是测试”提示开头的文本。您应该收到类似于以下内容的 json 响应:
   ```json
-  {
-    "id": "chatcmpl-8gqkDUt3Gs3711qhHS8xgs6YR1Wyt",
-    "object": "chat.completion",
-    "created": 1705223217,
-    "model": "gpt-3.5-turbo-0613",
-    "choices": [
-      {
-        "index": 0,
-        "message": {
-          "role": "assistant",
-          "content": "This is a test!"
-        },
-        "logprobs": null,
-        "finish_reason": "stop"
-      }
-    ],
-    "usage": {
-      "prompt_tokens": 13,
-      "completion_tokens": 5,
-      "total_tokens": 18
-    },
-    "system_fingerprint": null
-  }
+    {
+      "id": "chatcmpl-8gqkDUt3Gs3711qhHS8xgs6YR1Wyt",
+      "object": "chat.completion",
+      "created": 1705223217,
+      "model": "gpt-3.5-turbo-0613",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "This is a test!"
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 13,
+        "completion_tokens": 5,
+        "total_tokens": 18
+      },
+      "system_fingerprint": null
+    }
   ```
 
   对 流式 stream 格式的，返回类似如下：
+    ```json
+    data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null}]}
 
-  ```json
-  data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"role":"assistant"},"finish_reason":null}]}
+    data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"content":"你好"},"finish_reason":null}]}
 
-  data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"content":"你好"},"finish_reason":null}]}
+    ...
 
-  ...
+    data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"content":"。"},"finish_reason":null}]}
 
-  data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{"content":"。"},"finish_reason":null}]}
+    data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{},"finish_reason":"stop","usage":{"prompt_tokens":19,"completion_tokens":13,"total_tokens":32}}]}
 
-  data: {"id":"cmpl-1305b94c570f447fbde3180560736287","object":"chat.completion.chunk","created":1698999575,"model":"gpt3.5","choices":[{"index":0,"delta":{},"finish_reason":"stop","usage":{"prompt_tokens":19,"completion_tokens":13,"total_tokens":32}}]}
-
-  data: [DONE]
-  ```
+    data: [DONE]
+    ```
 
 ### 参数说明
 

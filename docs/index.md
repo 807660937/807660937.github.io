@@ -22,6 +22,10 @@ hero:
     - text: 开发者
       link: /fe/upoe/dev
       theme: alt
+    
+    - text: 联系客服
+      link: /assistant.jpg
+      theme: alt
 
 features:
   - icon: 🔥

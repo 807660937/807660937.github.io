@@ -41,7 +41,7 @@ export const NAV_DATA: NavData[] = [
         link: 'https://jwkj015.cn/',
       },
       {
-        icon: 'https://postcss.org/assets/logo-3e39b0aa.svg',
+        icon: 'https://reactrouter.com/favicon-light.png',
         title: '通义千问',
         desc: '通义大模型',
         link: 'https://jwkj015.cn/',
